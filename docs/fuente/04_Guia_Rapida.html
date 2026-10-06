@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Guía Rápida</title>
+<link rel="stylesheet" href="manual.css">
+<style>
+  @page { margin: 12mm 13mm 16mm; }
+  @page :first { margin: 12mm 13mm 16mm; }
+  body { font-size: 9.6pt; line-height: 1.45; }
+  .cab { display: flex; align-items: center; gap: 12px; background: linear-gradient(135deg, #0f172a, #1e3a5f); color: #fff; border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; }
+  .cab .logo { width: 44px; height: 44px; font-size: 15px; border-radius: 12px; }
+  .cab h1 { margin: 0; font-size: 17pt; letter-spacing: .02em; color: #fff; }
+  .cab .s { font-size: 9pt; color: #cbd5e1; }
+  .cab .d { margin-left: auto; text-align: right; font-size: 8.5pt; color: #a78bfa; font-weight: 600; }
+  .tarjeta { border-top-color: var(--c, #3b82f6); }
+  .tarjeta h3 .num { display: inline-flex; width: 20px; height: 20px; border-radius: 50%; background: var(--c, #3b82f6); color: #fff; font-size: 9pt; align-items: center; justify-content: center; margin-right: 6px; }
+  table { font-size: 8.8pt; margin: 4px 0 0; } th { font-size: 8pt; padding: 4px 6px; } td { padding: 3px 6px; }
+  .formula { font-size: 9pt; padding: 7px 10px; margin: 6px 0 0; }
+  .salto { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<div class="cab">
+  <div class="logo">AP</div>
+  <div><h1>APEX · Guía Rápida</h1><div class="s">Tareas del día a día en la tienda</div></div>
+  <div class="d">by Ing. Antony Pérez<br><span style="color:#cbd5e1;font-weight:400">Versión 1.0</span></div>
+</div>
+
+<div class="tarjetas">
+  <div class="tarjeta" style="--c:#16a34a">
+    <h3><span class="num">1</span>Al llegar: abrir la caja</h3>
+    <ol>
+      <li>Entra con tu usuario y contraseña.</li>
+      <li>Ve a <b>Caja</b> (o usa el aviso rojo del Punto de Venta).</li>
+      <li>Cuenta el sencillo del cajón y escríbelo en <b>Base inicial</b>.</li>
+      <li>Pulsa <b>Abrir Caja</b>.</li>
+    </ol>
+    <p style="margin:6px 0 0;font-size:8.8pt;color:#64748b">Sin caja abierta no se puede vender ni recibir abonos. La caja no se cierra sola.</p>
+  </div>
+  <div class="tarjeta" style="--c:#3b82f6">
+    <h3><span class="num">2</span>Vender</h3>
+    <ol>
+      <li><b>Punto de Venta</b> → busca el producto, cantidad → <b>Agregar al carrito</b>.</li>
+      <li>¿Es un regalo? Marca <b>Es obsequio</b> antes de agregar.</li>
+      <li>Elige el <b>cliente</b> (Mostrador si no se registra).</li>
+      <li>Elige la <b>forma de pago</b> y el descuento si aplica.</li>
+      <li><b>Cobrar</b> → <b>Imprimir Ticket</b>.</li>
+    </ol>
+  </div>
+  <div class="tarjeta" style="--c:#7c3aed;grid-column:span 2">
+    <h3><span class="num">3</span>Formas de pago</h3>
+    <table>
+      <tr><th>Forma</th><th>¿Es dinero en caja?</th><th>Qué pedir / tener en cuenta</th></tr>
+      <tr><td>Efectivo</td><td class="si">Sí, al cajón</td><td>Entregar las vueltas correctas.</td></tr>
+      <tr><td>Transferencia / Tarjeta</td><td class="si">Sí, a la cuenta</td><td>Verificar el comprobante o el voucher del datáfono.</td></tr>
+      <tr><td>Terceros (Addi, Sistecrédito…)</td><td class="no">No, va a cartera</td><td>Entidad y referencia de aprobación.</td></tr>
+      <tr><td>Crédito Interno</td><td class="no">No, va a cartera</td><td>Cliente registrado y quién autoriza.</td></tr>
+      <tr><td>Pago Mixto</td><td>Según cada parte</td><td>La suma de las partes debe dar el total.</td></tr>
+    </table>
+  </div>
+  <div class="tarjeta" style="--c:#d97706">
+    <h3><span class="num">4</span>Recibir un abono</h3>
+    <ol>
+      <li><b>Cartera</b> → elige la cuenta (ticket y cliente).</li>
+      <li>Escribe el monto (máximo el saldo).</li>
+      <li>Marca cómo pagó: Efectivo, Transferencia o Tarjeta.</li>
+      <li><b>Registrar Abono</b>.</li>
+    </ol>
+    <p style="margin:6px 0 0;font-size:8.8pt;color:#64748b">Cuando Addi o Sistecrédito consignen, se registra como abono por Transferencia.</p>
+  </div>
+  <div class="tarjeta" style="--c:#dc2626">
+    <h3><span class="num">5</span>Gastos y retiros <span style="font-size:8.5pt;color:#64748b">(admin)</span></h3>
+    <ol>
+      <li><b>Caja</b> → <b>Egreso / Gasto</b>.</li>
+      <li>Monto, de dónde sale y descripción clara.</li>
+      <li><b>Registrar Egreso</b>.</li>
+    </ol>
+    <p style="margin:6px 0 0;font-size:8.8pt;color:#b91c1c"><b>Todo dinero que salga del cajón</b> (pasajes, compras, retiros del dueño) se registra <b>antes de cerrar</b>; si no, saldrá como faltante.</p>
+  </div>
+</div>
+
+<div class="salto"></div>
+<div class="tarjetas">
+  <div class="tarjeta" style="--c:#0f172a;grid-column:span 2">
+    <h3><span class="num">6</span>Al terminar el día: cerrar la caja</h3>
+    <ol>
+      <li>Ve a <b>Caja</b>. Revisa <b>Dinero de esta caja por medio de pago</b>: compara Transferencias con la app del banco y Tarjeta con el cierre del datáfono.</li>
+      <li><b>Cuenta el efectivo</b> del cajón y escríbelo en <b>Efectivo contado</b>. El sistema muestra al instante: <b style="color:#16a34a">✔ Caja cuadrada</b>, <b style="color:#2563eb">Sobrante</b> o <b style="color:#dc2626">Faltante</b>.</li>
+      <li>Si hay diferencia, explica el motivo en la <b>Observación de cierre</b>.</li>
+      <li><b>Cerrar caja y generar reporte</b> → confirma. Se descarga el <b>PDF del cierre</b>: guárdalo o imprímelo y fírmalo.</li>
+    </ol>
+    <div class="formula">Efectivo esperado = Base + Ventas en efectivo + Abonos en efectivo + Ingresos en efectivo − Gastos en efectivo</div>
+  </div>
+  <div class="tarjeta" style="--c:#be185d">
+    <h3><span class="num">7</span>Descuadres <span style="font-size:8.5pt;color:#64748b">(admin)</span></h3>
+    <ol>
+      <li>Un faltante o sobrante queda <b>pendiente</b> con su fecha (Dashboard, Caja, Reportes y PDF).</li>
+      <li>Con una caja abierta: <b>Caja</b> → <b>Descuadres pendientes</b> → <b>Cuadrar</b>.</li>
+      <li>Escribe lo que se repone (o se retira, si sobró). Puede ser por partes.</li>
+      <li>Cuando se cubre todo, pasa a <b>Cuadrado</b>.</li>
+    </ol>
+  </div>
+  <div class="tarjeta" style="--c:#0891b2">
+    <h3><span class="num">8</span>Otras tareas <span style="font-size:8.5pt;color:#64748b">(admin)</span></h3>
+    <ul style="padding-left:16px;margin:0">
+      <li><b>Llegó mercancía:</b> Inventario → botón <b>+</b> del producto.</li>
+      <li><b>Producto dañado:</b> Averiados / Obsequios.</li>
+      <li><b>Categorías:</b> Inventario → panel Categorías (crear, renombrar, eliminar).</li>
+      <li><b>Proveedor nuevo:</b> Proveedores, con «qué suministra».</li>
+      <li><b>Reportes Excel:</b> ventas, inventario, cartera, descuadres.</li>
+      <li><b>Backup:</b> Backup DB, una vez por semana.</li>
+    </ul>
+  </div>
+  <div class="tarjeta" style="--c:#16a34a;grid-column:span 2">
+    <h3><span class="num">✔</span>Reglas de oro</h3>
+    <ul style="padding-left:16px;margin:0;columns:2;column-gap:10mm">
+      <li>Cada persona usa <b>su propio usuario</b>.</li>
+      <li>Abre la caja con el dinero <b>real</b> del cajón.</li>
+      <li>No saques dinero del cajón sin registrar el <b>egreso</b>.</li>
+      <li>Cierra la caja <b>todos los días</b> contando el efectivo.</li>
+      <li>Cerrar sesión <b>no</b> cierra la caja.</li>
+      <li>Contraseñas de <b>8 caracteres o más</b>; no las compartas.</li>
+      <li>5 contraseñas erradas bloquean el ingreso 15 minutos.</li>
+      <li>¿«Ocurrió un error»? Intenta de nuevo y avisa al administrador.</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

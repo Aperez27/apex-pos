@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Manual de Usuario</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+
+<div class="portada">
+  <div>
+    <div class="logo">AP</div>
+    <div class="marca">APEX</div>
+    <div class="firma">by Ing. Antony Pérez</div>
+  </div>
+  <div>
+    <h1>Manual de Usuario</h1>
+    <div class="sub">Guía completa para vender, cobrar, abrir y cerrar la caja, controlar descuadres, llevar la cartera de clientes y administrar el inventario, paso a paso.</div>
+    <div class="para">Dirigido a: vendedores y administradores de la tienda</div>
+  </div>
+  <div class="pie"><span>APEX — Sistema Integral de Gestión</span><span>Versión 1.0 · Octubre 2026</span></div>
+</div>
+
+<div class="indice">
+  <h2>Contenido</h2>
+  <ol>
+    <li>Introducción y roles</li>
+    <li>Ingreso al sistema</li>
+    <li>Pantalla principal y navegación</li>
+    <li>Dashboard</li>
+    <li>La caja: cómo funciona</li>
+    <li>Abrir la caja</li>
+    <li>Punto de Venta (POS)</li>
+    <li>Formas de pago</li>
+    <li>Ticket de venta</li>
+    <li>Cartera y abonos</li>
+    <li>Gastos e ingresos manuales</li>
+    <li>Cerrar la caja (arqueo)</li>
+    <li>Reporte de cierre en PDF</li>
+    <li>Descuadres: faltantes y sobrantes</li>
+    <li>Clientes</li>
+    <li>Proveedores</li>
+    <li>Inventario y categorías</li>
+    <li>Averiados y obsequios</li>
+    <li>Reportes</li>
+    <li>Usuarios y contraseñas</li>
+    <li>Backup de la base de datos</li>
+    <li>Configuración de la empresa</li>
+    <li>Mensajes y confirmaciones</li>
+    <li>Preguntas frecuentes</li>
+  </ol>
+  <div class="nota" style="margin-top:14px"><b>Sobre las imágenes</b>Las pantallas de este manual se tomaron con datos de demostración (empresa «Tienda Demo», vendedora «Laura Gómez», administrador «Carlos Ramírez»). En tu sistema verás tus propios datos.</div>
+</div>
+
+<!-- 1 -->
+<section>
+<h2><span class="n">1.</span>Introducción y roles</h2>
+<p><b>APEX</b> es un sistema de punto de venta (POS) para tiendas de venta y reparación de dispositivos. Permite registrar ventas con distintas formas de pago, controlar la caja con apertura y cierre diario, detectar y hacer seguimiento a los descuadres de dinero, llevar la cartera de clientes que compran a crédito, administrar el inventario y exportar reportes.</p>
+<p>Se usa desde el navegador (Edge, Chrome o Firefox), en computador, tableta o celular. Necesita conexión a internet para cargar los estilos y generar los PDF.</p>
+<h3>Roles de usuario</h3>
+<p>Cada persona ingresa con su propio usuario. Existen dos roles:</p>
+<table>
+  <tr><th>Módulo / acción</th><th>Vendedor</th><th>Administrador</th></tr>
+  <tr><td>Dashboard, Punto de Venta, Cartera (abonos), Clientes</td><td class="si">Sí</td><td class="si">Sí</td></tr>
+  <tr><td>Caja: abrir, ver el resumen, cerrar (arqueo) y ver/descargar reportes de cierre</td><td class="si">Sí</td><td class="si">Sí</td></tr>
+  <tr><td>Caja: registrar gastos e ingresos manuales, cuadrar descuadres, historial completo de movimientos</td><td class="no">No</td><td class="si">Sí</td></tr>
+  <tr><td>Proveedores, Inventario y categorías, Averiados / Obsequios</td><td class="no">No</td><td class="si">Sí</td></tr>
+  <tr><td>Reportes, Usuarios, Backup, Configuración</td><td class="no">No</td><td class="si">Sí</td></tr>
+</table>
+<div class="tip"><b>Consejo</b>Cada vendedor debe tener su propio usuario. Así cada venta, abono, apertura y cierre de caja queda registrado a nombre de quien lo hizo, lo que facilita la auditoría.</div>
+</section>
+
+<!-- 2 -->
+<section class="cap">
+<h2><span class="n">2.</span>Ingreso al sistema</h2>
+<ol class="pasos">
+  <li>Abre el navegador y entra a la dirección del sistema que te indicó el administrador (por ejemplo <code>http://localhost/APEX</code>).</li>
+  <li>Escribe tu <b>usuario</b> y tu <b>contraseña</b>.</li>
+  <li>Pulsa <span class="btn">Iniciar Sesión</span>. Entrarás al Dashboard.</li>
+</ol>
+<div class="lado">
+  <figure><img src="img/login.jpg"><figcaption>Pantalla de inicio de sesión</figcaption></figure>
+  <figure class="media"><img src="img/login_error.jpg"><figcaption>Usuario o contraseña incorrectos</figcaption></figure>
+</div>
+<h3>Primer ingreso: cambio de contraseña</h3>
+<div class="lado">
+  <div style="flex:1.2">
+    <p>Si entras con la <b>contraseña inicial</b> que te dio el administrador (o la que trae el sistema al instalarse), APEX te pedirá cambiarla antes de dejarte usar cualquier módulo:</p>
+    <ol class="pasos">
+      <li>Escribe la contraseña actual.</li>
+      <li>Escribe la nueva dos veces: mínimo 8 caracteres, distinta a la actual, a la inicial y a tu usuario.</li>
+      <li>Pulsa <span class="btn">Guardar contraseña</span>.</li>
+    </ol>
+    <p>En cualquier momento puedes cambiar tu contraseña con el ícono de <b>llave</b> que está junto a tu nombre, abajo en el menú.</p>
+  </div>
+  <figure class="chica" style="flex:.8"><img src="img/cambiar_clave.jpg" style="max-width:100%"><figcaption>Cambio obligatorio de la contraseña inicial</figcaption></figure>
+</div>
+<h3>Seguridad del acceso</h3>
+<ul>
+  <li>Si los datos no son correctos aparece «Usuario o contraseña incorrectos». Por seguridad el sistema no dice cuál de los dos falló.</li>
+  <li><b>Tras 5 intentos fallidos</b> desde el mismo equipo, el ingreso se bloquea durante <b>15 minutos</b>.</li>
+  <li>Si dejas el sistema <b>8 horas sin usar</b>, la sesión se cierra sola y verás «Tu sesión se cerró por inactividad».</li>
+  <li>Si al guardar un formulario aparece «Token de seguridad inválido», recarga la página (F5) e inténtalo de nuevo.</li>
+</ul>
+<h3>Cerrar sesión</h3>
+<p>Pulsa el ícono de salida junto a tu nombre (al lado de la llave), en la parte inferior del menú lateral. Cierra siempre la sesión si el computador es compartido.</p>
+<div class="nota"><b>Importante</b>Cerrar sesión <u>no</u> cierra la caja. La caja sigue abierta hasta que alguien la cierre desde el módulo Caja (capítulo 12).</div>
+</section>
+
+<!-- 3 -->
+<section class="cap">
+<h2><span class="n">3.</span>Pantalla principal y navegación</h2>
+<p>La pantalla se divide en el <b>menú lateral</b> (izquierda), la <b>barra superior</b> con el nombre de la sección y el reloj, el <b>área de trabajo</b> y, al final, el pie con los derechos de autor.</p>
+<div class="lado">
+  <figure><img src="img/menu_admin.jpg"><figcaption>Menú del administrador</figcaption></figure>
+  <figure><img src="img/menu_vendedor.jpg"><figcaption>Menú del vendedor</figcaption></figure>
+  <figure><img src="img/celular_menu.jpg"><figcaption>En el celular el menú se abre con el botón ☰</figcaption></figure>
+</div>
+</section>
+
+<!-- 4 -->
+<section class="cap">
+<h2><span class="n">4.</span>Dashboard</h2>
+<p>Es la pantalla de inicio. Resume la operación del día:</p>
+<figure><img src="img/dashboard_admin.jpg"><figcaption>Dashboard del administrador</figcaption></figure>
+<table>
+  <tr><th>Elemento</th><th>Qué muestra</th></tr>
+  <tr><td>Aviso rojo de descuadres</td><td>Aparece si hay cierres de caja con faltante o sobrante sin cuadrar. Lleva al módulo Caja.</td></tr>
+  <tr><td>Ventas hoy</td><td>Suma de las ventas del día y número de transacciones.</td></tr>
+  <tr><td>Cartera pendiente</td><td>Total que deben los clientes (crédito interno y terceros con saldo).</td></tr>
+  <tr><td>Efectivo en caja</td><td>Si la caja está abierta: el efectivo que debería haber en el cajón. Si está cerrada: «Cerrada» con el enlace para abrirla.</td></tr>
+  <tr><td>Productos</td><td>Cantidad de productos registrados.</td></tr>
+  <tr><td>Ventas recientes</td><td>Las últimas 8 ventas; el botón de la derecha abre el ticket.</td></tr>
+  <tr><td>Stock bajo</td><td>Productos con 5 unidades o menos.</td></tr>
+  <tr><td>Acciones rápidas</td><td>Accesos directos a vender, abonar, abrir/cerrar caja e inventario.</td></tr>
+</table>
+</section>
+
+<!-- 5 -->
+<section class="cap">
+<h2><span class="n">5.</span>La caja: cómo funciona</h2>
+<p>La caja es el centro del control del dinero. Funciona como un <b>turno</b>: se abre al empezar la jornada y se cierra al terminarla, y todo el dinero que se mueve entre esos dos momentos queda asociado a esa caja.</p>
+<ol class="pasos">
+  <li><b>Apertura:</b> se abre con la <b>base en efectivo</b>, el sencillo que hay en el cajón. <b>Sin caja abierta no se pueden registrar ventas ni abonos.</b></li>
+  <li><b>Durante la jornada:</b> cada venta, abono, gasto e ingreso queda ligado a la caja abierta. Efectivo, transferencia y tarjeta son <b>dinero recibido</b>. Terceros (Addi, Sistecrédito…) y Crédito Interno <b>no son dinero recibido</b>: quedan en Cartera hasta que se cobren.</li>
+  <li><b>La caja nunca se cierra sola:</b> sigue abierta aunque cambie el día, se apague el computador o se cierre la sesión.</li>
+  <li><b>Cierre (arqueo):</b> se cuenta el efectivo del cajón y se escribe. El sistema lo compara con el efectivo esperado y muestra si la caja está <b>cuadrada</b>, si hay <b>faltante</b> o si hay <b>sobrante</b>.</li>
+  <li><b>Reporte:</b> al cerrar se genera un reporte detallado que se descarga en PDF.</li>
+  <li><b>Descuadres:</b> si hubo faltante o sobrante, queda registrado como <b>pendiente</b> con su fecha hasta que el administrador lo cuadre.</li>
+</ol>
+<div class="formula">Efectivo esperado = Base inicial + Ventas en efectivo + Abonos en efectivo + Ingresos en efectivo − Gastos en efectivo</div>
+<figure class="media"><img src="img/caja_ayuda.jpg"><figcaption>El botón «¿Cómo funciona?» del módulo Caja muestra este mismo resumen</figcaption></figure>
+</section>
+
+<!-- 6 -->
+<section class="cap">
+<h2><span class="n">6.</span>Abrir la caja</h2>
+<p>Lo puede hacer el vendedor o el administrador, desde dos lugares:</p>
+<h3>Desde el módulo Caja</h3>
+<ol class="pasos">
+  <li>Entra a <b>Caja</b> en el menú.</li>
+  <li>En <b>Base inicial en efectivo</b> escribe cuánto dinero hay en el cajón al empezar.</li>
+  <li>Opcionalmente escribe una observación y pulsa <span class="btn">Abrir Caja</span>.</li>
+</ol>
+<figure><img src="img/caja_cerrada.jpg"><figcaption>Caja cerrada: formulario de apertura, descuadres pendientes y cierres anteriores</figcaption></figure>
+<h3>Desde el Punto de Venta</h3>
+<p>Si intentas vender con la caja cerrada, el Punto de Venta muestra un aviso rojo con el mismo formulario de apertura y el botón <span class="btn">Cobrar</span> queda deshabilitado.</p>
+<figure><img src="img/ventas_caja_cerrada.jpg"><figcaption>Punto de Venta con la caja cerrada</figcaption></figure>
+<div class="nota"><b>Solo una caja a la vez</b>No se puede abrir una caja si ya hay otra abierta: primero hay que cerrarla.</div>
+</section>
+
+<!-- 7 -->
+<section class="cap">
+<h2><span class="n">7.</span>Punto de Venta (POS)</h2>
+<figure><img src="img/ventas_carrito.jpg"><figcaption>Punto de Venta con productos en el carrito, un obsequio y un descuento</figcaption></figure>
+<h3>Registrar una venta</h3>
+<ol class="pasos">
+  <li>En <b>Agregar Producto</b>, escribe parte del nombre en <b>Buscar producto</b> para filtrar la lista.</li>
+  <li>Selecciona el producto. La lista muestra el color, el precio y las unidades disponibles.</li>
+  <li>Indica la <b>Cantidad</b> y pulsa <span class="btn">Agregar al carrito</span>. Repite para cada producto.</li>
+  <li>Elige el <b>Cliente</b>. Para ventas de mostrador usa <i>Cliente General (Mostrador)</i>. Si es nuevo, regístralo en <b>Nuevo cliente rápido</b>.</li>
+  <li>Elige la <b>Forma de pago</b> (capítulo 8).</li>
+  <li>Si aplica, escribe un <b>Descuento</b>; el total se recalcula al instante.</li>
+  <li>Pulsa <span class="btn">Cobrar</span>. Aparece la confirmación con el botón para imprimir el ticket.</li>
+</ol>
+<h3>Obsequios</h3>
+<p>Para regalar un producto con la venta (vidrio templado, forro, cargador…) marca <b>Es obsequio</b> antes de agregarlo. Sale a <b>$0</b>, se descuenta del inventario y queda registrado en <i>Averiados / Obsequios</i>.</p>
+<h3>Quitar productos</h3>
+<p>El botón ✕ de cada fila quita el producto del carrito (pide confirmación). El carrito no afecta el inventario hasta que se cobra.</p>
+<div class="nota"><b>Stock</b>El sistema no permite vender más unidades de las que hay. Si dos personas venden el último producto al mismo tiempo, solo una venta se registra y la otra recibe el aviso «Stock insuficiente».</div>
+<figure class="chica"><img src="img/venta_exito.jpg"><figcaption>Venta registrada: opción de imprimir el ticket</figcaption></figure>
+</section>
+
+<!-- 8 -->
+<section class="cap">
+<h2><span class="n">8.</span>Formas de pago</h2>
+<table>
+  <tr><th>Forma de pago</th><th>¿Entra a caja?</th><th>Qué pasa</th></tr>
+  <tr><td>Efectivo</td><td class="si">Sí (efectivo)</td><td>Suma al efectivo esperado del cajón.</td></tr>
+  <tr><td>Transferencia</td><td class="si">Sí (cuenta)</td><td>Dinero en la cuenta bancaria (Nequi, Bancolombia…).</td></tr>
+  <tr><td>Tarjeta (datáfono)</td><td class="si">Sí (cuenta)</td><td>Dinero que llega por el datáfono.</td></tr>
+  <tr><td>Terceros</td><td class="no">No</td><td>La paga una entidad (Addi, Sistecrédito u otra). Queda en Cartera hasta que la entidad consigne.</td></tr>
+  <tr><td>Crédito Interno</td><td class="no">No</td><td>El cliente queda debiendo a la tienda. Queda en Cartera a su nombre.</td></tr>
+  <tr><td>Pago Mixto</td><td>Según cada parte</td><td>El total se reparte entre varios métodos.</td></tr>
+</table>
+<h3>Pago mixto</h3>
+<p>Elige <b>Pago Mixto</b>, escribe el monto de cada método y usa <span class="btn">+ Agregar método</span> para más filas. <b>La suma debe ser igual al total.</b></p>
+<figure class="media"><img src="img/pago_mixto.jpg"><figcaption>Pago mixto: efectivo + transferencia</figcaption></figure>
+<h3>Terceros</h3>
+<p>Elige la <b>Entidad</b> (Addi, Sistecrédito u «Otra» escribiendo su nombre) y, si la tienes, la <b>referencia de aprobación</b>.</p>
+<figure class="media"><img src="img/pago_terceros.jpg"><figcaption>Venta con Terceros</figcaption></figure>
+<h3>Crédito Interno</h3>
+<p>Debe quedar a nombre de un <b>cliente registrado</b> (no de Cliente General) e indicar <b>quién autoriza</b> el crédito.</p>
+<figure class="media"><img src="img/pago_credito.jpg"><figcaption>Venta a Crédito Interno con quien autoriza</figcaption></figure>
+</section>
+
+<!-- 9 -->
+<section class="cap">
+<h2><span class="n">9.</span>Ticket de venta</h2>
+<div class="lado">
+  <figure class="mini" style="flex:.8"><img src="img/ticket.jpg" style="max-width:100%"><figcaption>Ticket para impresora térmica de 80 mm</figcaption></figure>
+  <div style="flex:1.2">
+    <p>Después de cobrar pulsa <span class="btn">Imprimir Ticket</span>. También puedes abrir el ticket de cualquier venta desde el Dashboard (Ventas recientes).</p>
+    <p>El ticket muestra los datos de la empresa (se configuran en <i>Configuración</i>), el número de ticket, la fecha, el cajero, el cliente, la forma de pago con su desglose, los productos con su color, los obsequios marcados como <b>GRATIS</b>, el descuento, el total, el saldo pendiente si lo hay y el mensaje del pie.</p>
+    <p>Pulsa <span class="btn">Imprimir</span> y elige la impresora térmica, o «Guardar como PDF».</p>
+  </div>
+</div>
+</section>
+
+<!-- 10 -->
+<section class="cap">
+<h2><span class="n">10.</span>Cartera y abonos</h2>
+<p>La Cartera reúne todas las ventas con saldo pendiente: Crédito Interno, Terceros y la parte a crédito de los pagos mixtos.</p>
+<figure><img src="img/abonos.jpg"><figcaption>Cartera: registrar un abono y lista de cuentas por cobrar</figcaption></figure>
+<h3>Registrar un abono</h3>
+<ol class="pasos">
+  <li>La caja debe estar abierta (el abono es dinero que entra).</li>
+  <li>En <b>Registrar Abono</b> elige la cuenta (ticket y cliente). Se muestra el saldo pendiente.</li>
+  <li>Escribe el <b>monto</b>; no puede superar el saldo.</li>
+  <li>Elige <b>cómo se recibió</b>: Efectivo, Transferencia o Tarjeta.</li>
+  <li>Opcionalmente agrega una observación (por ejemplo «Nequi ref. 12345» o «pagó Addi») y pulsa <span class="btn">Registrar Abono</span>.</li>
+</ol>
+<p>Cuando el saldo llega a cero la cuenta queda saldada y sale de la lista. El botón de historial de cada cuenta muestra todos sus abonos.</p>
+<figure class="media"><img src="img/abonos_historial.jpg"><figcaption>Historial de abonos de una cuenta</figcaption></figure>
+<div class="tip"><b>Terceros</b>Cuando Addi o Sistecrédito consignen a la tienda, registra ese pago como un abono por Transferencia a la venta correspondiente.</div>
+</section>
+
+<!-- 11 -->
+<section class="cap">
+<h2><span class="n">11.</span>Gastos e ingresos manuales <span style="font-size:10pt;color:#64748b">(administrador)</span></h2>
+<p>Todo dinero que sale o entra a la caja por fuera de ventas y abonos debe registrarse; si no, el cierre mostrará un descuadre.</p>
+<ul>
+  <li><b>Egreso / Gasto:</b> pasajes, compra de repuestos, pago de servicios, retiro del dueño… Indica el monto, de dónde sale (efectivo, cuenta o tarjeta) y una descripción clara.</li>
+  <li><b>Ingreso manual:</b> dinero que entra por otro motivo (consignación, adelanto…).</li>
+</ul>
+<div class="ojo"><b>Muy importante</b>Si el dueño o un empleado saca efectivo del cajón, debe registrarse como <b>Egreso</b> antes de cerrar. Si no se registra, al cerrar aparecerá como <b>faltante</b>.</div>
+<p>Los vendedores no ven estos formularios: si hubo un gasto en efectivo durante el día, deben pedir al administrador que lo registre antes del cierre.</p>
+</section>
+
+<!-- 12 -->
+<section class="cap">
+<h2><span class="n">12.</span>Cerrar la caja (arqueo)</h2>
+<p>Al final de la jornada, el vendedor o el administrador cierra la caja comparando el dinero real con lo registrado.</p>
+<figure><img src="img/caja_abierta.jpg"><figcaption>Caja abierta: resumen, dinero por medio de pago, gastos y cierre</figcaption></figure>
+<ol class="pasos">
+  <li>Entra a <b>Caja</b>. Revisa los indicadores: ventas, <b>efectivo esperado</b>, dinero <b>en cuentas</b> y lo que se fue <b>a cartera</b>.</li>
+  <li>En <b>Dinero de esta caja por medio de pago</b> compara las transferencias con la app del banco y la tarjeta con el cierre del datáfono.</li>
+  <li><b>Cuenta el efectivo</b> del cajón y escríbelo en <b>Efectivo contado en el cajón</b>. Al instante verás «✔ Caja cuadrada», «Sobrante: $…» o «Faltante: $…».</li>
+  <li>Si hay diferencia, explica el motivo en <b>Observación de cierre</b>.</li>
+  <li>Pulsa <span class="btn">Cerrar caja y generar reporte</span> y confirma. Se abre el reporte y se descarga el PDF.</li>
+</ol>
+<div class="lado">
+  <figure><img src="img/caja_arqueo.jpg"><figcaption>Arqueo: el sistema calcula la diferencia mientras escribes</figcaption></figure>
+  <figure class="chica" style="flex:.6"><img src="img/confirmar_cierre.jpg" style="max-width:100%"><figcaption>Confirmación antes de cerrar</figcaption></figure>
+</div>
+<div class="nota"><b>Después del cierre</b>La caja cerrada ya no admite movimientos. Para seguir vendiendo hay que abrir una nueva caja.</div>
+</section>
+
+<!-- 13 -->
+<section class="cap">
+<h2><span class="n">13.</span>Reporte de cierre en PDF</h2>
+<p>Al cerrar la caja se abre el reporte y se descarga automáticamente en PDF (archivo <code>Cierre_caja_0002_2026-10-05.pdf</code>). También puedes verlo en cualquier momento desde <b>Cierres de caja</b> → <span class="btn">Ver / PDF</span>, y mientras la caja está abierta con <span class="btn">Ver reporte parcial</span>.</p>
+<p>El reporte incluye:</p>
+<ul>
+  <li><b>Encabezado:</b> empresa, número de caja, apertura y cierre (fecha, hora y usuario), base inicial.</li>
+  <li><b>Indicadores:</b> total vendido, efectivo en cajón, dinero en cuentas y lo enviado a cartera.</li>
+  <li><b>Cuadre de efectivo:</b> el cálculo completo del efectivo esperado, lo contado, la diferencia y el estado del descuadre.</li>
+  <li><b>Dinero recibido por medio:</b> entradas y salidas de efectivo, transferencia y tarjeta.</li>
+  <li><b>Ventas por forma de pago</b> (con el desglose por entidad de Terceros), subtotal y descuentos.</li>
+  <li><b>Productos vendidos</b> consolidados, con obsequios.</li>
+  <li><b>Detalle de cada venta:</b> ticket, hora, vendedor, cliente con documento, productos, forma de pago y total.</li>
+  <li><b>Abonos recibidos</b> y <b>gastos e ingresos manuales</b>.</li>
+  <li><b>Descuadre de esta caja</b> y sus ajustes, y los <b>descuadres pendientes de otras cajas</b>.</li>
+  <li>Observaciones y espacio para <b>firmas</b> (entrega / recibe).</li>
+</ul>
+<p>Botones: <span class="btn">Descargar PDF</span>, <span class="btn">Imprimir</span> y <span class="btn">Volver a Caja</span>.</p>
+<figure class="alto"><img src="img/reporte_cierre_completo.jpg"><figcaption>Reporte de un cierre con faltante parcialmente cuadrado</figcaption></figure>
+</section>
+
+<!-- 14 -->
+<section class="cap">
+<h2><span class="n">14.</span>Descuadres: faltantes y sobrantes</h2>
+<p>Cuando el efectivo contado no coincide con el esperado, el cierre queda con un <b>descuadre</b>:</p>
+<ul>
+  <li><b>Faltante:</b> hay menos dinero del esperado.</li>
+  <li><b>Sobrante:</b> hay más dinero del esperado.</li>
+</ul>
+<p>El descuadre <b>no se borra</b>: queda registrado con la fecha del cierre, quién cerró y la observación, y aparece como <b>pendiente</b> en el Dashboard, en Caja, en Reportes y en el PDF de cada cierre posterior, hasta que se cuadre.</p>
+<figure><img src="img/descuadres_pendientes.jpg"><figcaption>Descuadres pendientes en el módulo Caja</figcaption></figure>
+<h3>Cuadrar un descuadre (administrador)</h3>
+<ol class="pasos">
+  <li>Debe haber una caja abierta: el dinero de la reposición entra a ella (o el sobrante sale de ella).</li>
+  <li>En <b>Descuadres pendientes</b> pulsa <span class="btn">Cuadrar</span> en la fila correspondiente.</li>
+  <li>Escribe el <b>monto</b>. Puede ser todo lo pendiente o <b>solo una parte</b>: el resto seguirá pendiente.</li>
+  <li>Elige por dónde entra o sale el dinero y agrega un detalle (por ejemplo «Lo repuso la vendedora»).</li>
+  <li>Pulsa <span class="btn">Registrar ajuste</span>.</li>
+</ol>
+<div class="lado">
+  <figure><img src="img/cuadrar_modal.jpg"><figcaption>Reponer un faltante (abono parcial)</figcaption></figure>
+  <figure><img src="img/cierres.jpg"><figcaption>En los cierres se ve el estado de cada descuadre</figcaption></figure>
+</div>
+<p>Un <b>faltante</b> se cuadra con una <b>entrada</b> (reposición del dinero); un <b>sobrante</b> con una <b>salida</b> (retiro). Cuando los ajustes cubren la diferencia, el descuadre pasa a <b>Cuadrado</b> con la fecha en que se completó.</p>
+</section>
+
+<!-- 15 -->
+<section class="cap">
+<h2><span class="n">15.</span>Clientes</h2>
+<figure><img src="img/clientes.jpg"><figcaption>Directorio de clientes</figcaption></figure>
+<ul>
+  <li><span class="btn">Nuevo Cliente</span>: nombre y documento son obligatorios; el documento no se puede repetir.</li>
+  <li>Busca por nombre, documento o teléfono. El lápiz edita los datos.</li>
+  <li>No se puede eliminar un cliente con ventas, ni el <i>Cliente General (Mostrador)</i>.</li>
+</ul>
+</section>
+
+<!-- 16 -->
+<section class="cap">
+<h2><span class="n">16.</span>Proveedores <span style="font-size:10pt;color:#64748b">(administrador)</span></h2>
+<p>Registra a quién le compras. El campo <b>Observación / qué suministra</b> deja claro qué provee cada uno (vidrios, repuestos, equipos…) y se muestra en la lista y al lado del nombre al elegir el proveedor de un producto.</p>
+<figure><img src="img/proveedores.jpg"><figcaption>Proveedores con la columna «Qué suministra»</figcaption></figure>
+<figure class="media"><img src="img/proveedor_editar.jpg"><figcaption>Editar proveedor</figcaption></figure>
+<p>No se puede eliminar un proveedor que tenga productos asociados. Este módulo no es visible para los vendedores.</p>
+</section>
+
+<!-- 17 -->
+<section class="cap">
+<h2><span class="n">17.</span>Inventario y categorías <span style="font-size:10pt;color:#64748b">(administrador)</span></h2>
+<figure><img src="img/productos.jpg"><figcaption>Inventario con categorías</figcaption></figure>
+<h3>Nuevo producto</h3>
+<ol class="pasos">
+  <li>Pulsa <span class="btn">Nuevo Producto</span>.</li>
+  <li>Escribe el nombre, elige categoría y proveedor, el costo y el precio de venta (PVP).</li>
+  <li>En <b>Colores y stock inicial</b> indica cada color con sus unidades; <span class="btn">Agregar color</span> añade filas. Cada color queda como un producto con su propio stock. Si el producto no maneja colores, deja una sola fila sin color.</li>
+</ol>
+<figure class="media"><img src="img/producto_nuevo.jpg"><figcaption>Producto en dos colores</figcaption></figure>
+<h3>Otras acciones</h3>
+<ul>
+  <li><b>Lápiz:</b> editar nombre, color, categoría, proveedor y precios.</li>
+  <li><b>+</b> (verde): agregar unidades al stock cuando llega mercancía.</li>
+  <li><b>Papelera:</b> eliminar (solo si el producto nunca se vendió; si tiene historial, deja su stock en 0).</li>
+  <li>La columna <b>Margen</b> muestra la ganancia sobre el precio de venta.</li>
+</ul>
+<h3>Categorías</h3>
+<p>En el panel <b>Categorías</b> puedes crear categorías nuevas, <b>renombrarlas</b> (lápiz) y <b>eliminarlas</b> (papelera) para adaptarlas a tu negocio. Al eliminar una categoría sus productos <b>no se borran</b>: quedan «Sin categoría», y el aviso te dice cuántos son.</p>
+<div class="lado">
+  <figure><img src="img/categorias.jpg"><figcaption>Panel de categorías</figcaption></figure>
+  <figure><img src="img/categoria_renombrar.jpg"><figcaption>Renombrar categoría</figcaption></figure>
+</div>
+</section>
+
+<!-- 18 -->
+<section class="cap">
+<h2><span class="n">18.</span>Averiados y obsequios <span style="font-size:10pt;color:#64748b">(administrador)</span></h2>
+<p>Registra salidas de inventario que no son ventas: productos dañados (averiados) o regalados fuera de una venta (obsequios). Elige el producto, el tipo, la cantidad y el motivo, y pulsa <span class="btn">Registrar Salida</span>. El stock se descuenta al instante.</p>
+<figure><img src="img/averiados.jpg"><figcaption>Averiados / Obsequios con el costo del mes</figcaption></figure>
+<p>Los obsequios entregados dentro de una venta aparecen aquí automáticamente con un enlace al ticket.</p>
+</section>
+
+<!-- 19 -->
+<section class="cap">
+<h2><span class="n">19.</span>Reportes <span style="font-size:10pt;color:#64748b">(administrador)</span></h2>
+<figure><img src="img/reportes.jpg"><figcaption>Módulo de Reportes</figcaption></figure>
+<table>
+  <tr><th>Reporte</th><th>Contenido</th></tr>
+  <tr><td>Ventas (Excel)</td><td>Indicadores, ventas por forma de pago y por vendedor, detalle de cada venta y productos vendidos, en el rango de fechas que elijas.</td></tr>
+  <tr><td>Inventario (Excel)</td><td>Productos por categoría con color, proveedor, costo, precio, margen, stock y valor del inventario.</td></tr>
+  <tr><td>Cartera pendiente (Excel)</td><td>Cuentas por cobrar con antigüedad, quién autorizó y todos sus abonos.</td></tr>
+  <tr><td>Descuadres de caja</td><td>En pantalla: pendientes o todos, con el total por reponer y el enlace al PDF de cada cierre. En Excel: hoja de descuadres y hoja de ajustes.</td></tr>
+</table>
+</section>
+
+<!-- 20 -->
+<section class="cap">
+<h2><span class="n">20.</span>Usuarios y contraseñas <span style="font-size:10pt;color:#64748b">(administrador)</span></h2>
+<figure><img src="img/usuarios.jpg"><figcaption>Usuarios del sistema</figcaption></figure>
+<ul>
+  <li><span class="btn">Nuevo Usuario</span>: nombre, usuario (para ingresar), contraseña y rol.</li>
+  <li><b>Contraseñas de mínimo 8 caracteres.</b> Usa una combinación de letras y números que no sea fácil de adivinar.</li>
+  <li>Para asignar una contraseña nueva a otro usuario escríbela en su fila y pulsa <span class="btn">Cambiar</span>. Cada persona puede cambiar la suya con el ícono de llave del menú.</li>
+  <li>No se puede eliminar la propia cuenta, ni un usuario con ventas, abonos o movimientos de caja. Para quitarle el acceso a alguien, cámbiale la contraseña.</li>
+</ul>
+<div class="ojo"><b>Primera vez</b>El sistema se instala con los usuarios <code>admin</code> y <code>vendedor</code> y contraseñas iniciales conocidas. Al ingresar con ellas, APEX obliga a cambiarlas; Configuración muestra una alerta mientras algún usuario conserve la inicial.</div>
+</section>
+
+<!-- 21 -->
+<section class="cap">
+<h2><span class="n">21.</span>Backup de la base de datos <span style="font-size:10pt;color:#64748b">(administrador)</span></h2>
+<figure><img src="img/backup.jpg"><figcaption>Backup</figcaption></figure>
+<p>Pulsa <span class="btn">Descargar Backup SQL</span> para bajar una copia completa de la información (archivo <code>backup_apex_AAAAMMDD_HHMMSS.sql</code>). Guárdala fuera del computador (USB, Drive). <b>Recomendado: una vez por semana y siempre antes de actualizar el sistema.</b> La restauración se explica en el Manual de Instalación.</p>
+<div class="ojo"><b>Confidencial</b>El archivo de backup contiene toda la información del negocio. No lo compartas.</div>
+</section>
+
+<!-- 22 -->
+<section class="cap">
+<h2><span class="n">22.</span>Configuración de la empresa <span style="font-size:10pt;color:#64748b">(administrador)</span></h2>
+<figure><img src="img/configuracion.jpg"><figcaption>Configuración</figcaption></figure>
+<p>Nombre de la empresa, NIT, teléfono, dirección y el mensaje del pie del ticket. Estos datos salen en los tickets, reportes de cierre y archivos Excel. El recuadro <b>Seguridad de accesos</b> avisa si algún usuario conserva la contraseña inicial.</p>
+</section>
+
+<!-- 23 -->
+<section class="cap">
+<h2><span class="n">23.</span>Mensajes y confirmaciones</h2>
+<div class="lado">
+  <figure><img src="img/toast.jpg"><figcaption>Aviso de acción exitosa (arriba a la derecha, desaparece solo)</figcaption></figure>
+  <figure class="chica" style="flex:.7"><img src="img/confirmar_eliminar.jpg" style="max-width:100%"><figcaption>Confirmación antes de eliminar</figcaption></figure>
+</div>
+<ul>
+  <li><b>Verde (arriba a la derecha):</b> la acción se guardó.</li>
+  <li><b>Ventana roja «No se pudo completar»:</b> explica qué falta corregir; no se guardó nada.</li>
+  <li><b>«¿Estás seguro?»:</b> aparece antes de eliminar o cerrar la caja. Pulsa <span class="btn">Cancelar</span> si no estás seguro.</li>
+</ul>
+<p>Los campos de dinero muestran el separador de miles mientras escribes (1,250,000); no escribas el signo $.</p>
+</section>
+
+<!-- 24 -->
+<section class="cap">
+<h2><span class="n">24.</span>Preguntas frecuentes</h2>
+<h4>No me deja cobrar: el botón Cobrar está gris.</h4>
+<p>La caja está cerrada. Ábrela desde el aviso del Punto de Venta o desde Caja.</p>
+<h4>¿Qué pasa si se me olvida cerrar la caja?</h4>
+<p>Nada se pierde: sigue abierta al día siguiente y todo lo nuevo se suma a ella. Ciérrala cuando cuentes el dinero; el reporte mostrará el período completo desde la apertura.</p>
+<h4>Al cerrar me sale faltante pero sé que el jefe sacó dinero.</h4>
+<p>Ese retiro debió registrarse como Egreso antes del cierre. Si ya cerraste, el administrador lo cuadra con un ajuste explicando el motivo (capítulo 14).</p>
+<h4>¿Por qué una venta a Addi no aparece en el efectivo?</h4>
+<p>Porque no es dinero recibido: queda en Cartera hasta que Addi consigne. Ese pago se registra como abono por Transferencia.</p>
+<h4>Un vendedor dejó de trabajar con nosotros.</h4>
+<p>Cámbiale la contraseña desde Usuarios: pierde el acceso de inmediato y se conserva todo su historial.</p>
+<h4>Me bloqueó el ingreso.</h4>
+<p>Después de 5 contraseñas erradas el acceso se bloquea 15 minutos. Espera y vuelve a intentarlo, o pide al administrador que te asigne una nueva contraseña.</p>
+<h4>Veo «Ocurrió un error».</h4>
+<p>Intenta de nuevo. Si se repite, avisa al administrador: el detalle técnico queda guardado en el registro de errores del sistema.</p>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+APEX — Sistema Integral de Gestión
+Copyright (c) 2026 Ing. Antony Pérez. Todos los derechos reservados.
+
+LICENCIA DE SOFTWARE PROPIETARIO
+
+1. Titularidad. Este software, incluido su código fuente, diseño, base de datos, documentación,
+   manuales e imágenes (en adelante, "el Software"), es propiedad exclusiva de Ing. Antony Pérez
+   y está protegido por las leyes de derechos de autor y los tratados internacionales aplicables.
+
+2. Código visible, no libre. Que el código fuente sea visible públicamente NO concede ningún
+   derecho de uso. Se permite únicamente consultarlo con fines de evaluación o referencia.
+
+3. Prohibiciones. Salvo autorización previa, expresa y por escrito del titular, queda prohibido:
+   a) usar, instalar o ejecutar el Software con fines comerciales o en producción;
+   b) copiar, modificar, adaptar, traducir o crear obras derivadas;
+   c) distribuir, sublicenciar, vender, alquilar, publicar o poner a disposición de terceros
+      el Software o partes de él;
+   d) eliminar o alterar los avisos de derechos de autor, la marca "APEX" o el nombre del autor.
+
+4. Licencias de uso. El titular puede otorgar licencias de uso mediante acuerdo escrito, en las
+   condiciones que en cada caso se pacten. Para solicitar una licencia, contacte al titular a
+   través de su perfil de GitHub: https://github.com/Aperez27
+
+5. Componentes de terceros. El Software utiliza bibliotecas de terceros cargadas desde CDN
+   (Bootstrap, Font Awesome, SweetAlert2, html2pdf.js), que se rigen por sus propias licencias.
+
+6. Sin garantía. El Software se proporciona "tal cual", sin garantías de ningún tipo. En ningún
+   caso el titular será responsable por daños derivados del uso o la imposibilidad de uso del
+   Software, salvo lo que se pacte expresamente en una licencia escrita.

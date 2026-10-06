@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Manual de Instalación</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+
+<div class="portada">
+  <div>
+    <div class="logo">AP</div>
+    <div class="marca">APEX</div>
+    <div class="firma">by Ing. Antony Pérez</div>
+  </div>
+  <div>
+    <h1>Manual de Instalación</h1>
+    <div class="sub">Instalación en Windows, Linux, macOS y Docker; configuración, copias de seguridad, actualización y puesta en producción.</div>
+    <div class="para">Dirigido a: administrador del sistema / soporte técnico</div>
+  </div>
+  <div class="pie"><span>APEX — Sistema Integral de Gestión</span><span>Versión 1.0 · Octubre 2026</span></div>
+</div>
+
+<div class="indice">
+  <h2>Contenido</h2>
+  <ol>
+    <li>Requisitos</li>
+    <li>Obtener el sistema</li>
+    <li>Configuración</li>
+    <li>Instalar en Windows (XAMPP)</li>
+    <li>Instalar en Linux (Ubuntu / Debian)</li>
+    <li>Instalar en macOS</li>
+    <li>Instalar con Docker</li>
+    <li>Primer ingreso y puesta a punto</li>
+    <li>Copias de seguridad</li>
+    <li>Restaurar una copia y mover de equipo</li>
+    <li>Actualizar a una versión nueva</li>
+    <li>Usar el sistema en red local</li>
+    <li>Puesta en producción y seguridad</li>
+    <li>Verificar la instalación</li>
+    <li>Solución de problemas</li>
+  </ol>
+</div>
+
+<section>
+<h2><span class="n">1.</span>Requisitos</h2>
+<table>
+  <tr><th>Elemento</th><th>Requisito</th></tr>
+  <tr><td>Sistema operativo</td><td>Windows 10/11, Linux (Ubuntu, Debian, Fedora…) o macOS. Con Docker, cualquiera de ellos.</td></tr>
+  <tr><td>PHP</td><td><b>8.1 o superior</b> (probado en 8.2) con las extensiones <code>pdo_mysql</code> y <code>mbstring</code>.</td></tr>
+  <tr><td>Base de datos</td><td>MariaDB 10.4+ o MySQL 8.</td></tr>
+  <tr><td>Servidor web</td><td>Apache 2.4 con <code>mod_headers</code> y <code>AllowOverride All</code> (recomendado: aplica los <code>.htaccess</code> de seguridad), o Nginx + PHP-FPM con la configuración de <code>deploy/nginx-apex.conf</code>.</td></tr>
+  <tr><td>Navegador</td><td>Microsoft Edge, Google Chrome o Firefox actualizados.</td></tr>
+  <tr><td>Internet</td><td>Necesario en los equipos que usan el sistema: estilos, íconos, ventanas de confirmación y el generador de PDF se cargan desde CDN.</td></tr>
+  <tr><td>Impresora (opcional)</td><td>Térmica de 80 mm para tickets; cualquier impresora para los reportes.</td></tr>
+</table>
+</section>
+
+<section class="cap">
+<h2><span class="n">2.</span>Obtener el sistema</h2>
+<p>El código está en GitHub: <code>https://github.com/Aperez27/apex-pos</code>. Puedes clonarlo con Git o descargarlo en ZIP (<b>Code → Download ZIP</b>). El uso requiere licencia del autor (archivo <code>LICENSE</code>).</p>
+<pre>git clone https://github.com/Aperez27/apex-pos.git apex</pre>
+<p>La carpeta puede llamarse como quieras; en este manual se usa <code>apex</code>.</p>
+<pre>apex/
+├── *.php                  módulos (ventas, caja, cartera, inventario, reportes…)
+├── setup.php              instalador / actualizador de la base de datos
+├── .htaccess              reglas de seguridad de Apache
+├── config/                config.php (no editar) · config.local.example.php · conexion.php
+├── includes/              encabezado, pie, lógica de caja, generador de Excel
+├── logs/                  registro de errores
+├── docs/                  manuales en PDF (docs/fuente: fuentes para regenerarlos)
+├── deploy/                ejemplos de Apache, Nginx y script de base de datos
+├── docker/, Dockerfile, docker-compose.yml, .env.example
+└── tests/                 pruebas automáticas</pre>
+<div class="ojo"><b>No elimines los archivos .htaccess</b>Están en la raíz y en <code>config</code>, <code>includes</code>, <code>logs</code>, <code>tests</code>, <code>deploy</code>, <code>docker</code>, <code>.github</code> y <code>docs/fuente</code>. Impiden descargar desde el navegador la configuración, los registros, la carpeta <code>.git</code> y demás archivos internos.</div>
+</section>
+
+<section class="cap">
+<h2><span class="n">3.</span>Configuración</h2>
+<p>El archivo <code>config/config.php</code> <b>no se edita</b> (se actualiza con cada versión). Los datos de cada instalación se escriben en uno de estos dos medios, que nunca se suben al repositorio:</p>
+<table>
+  <tr><th>Medio</th><th>Cómo</th><th>Ideal para</th></tr>
+  <tr><td><code>config/config.local.php</code></td><td>Copia <code>config.local.example.php</code> con ese nombre y escribe tus valores.</td><td>XAMPP, servidores Linux</td></tr>
+  <tr><td>Variables de entorno</td><td><code>APEX_DB_HOST</code>, <code>APEX_DB_PORT</code>, <code>APEX_DB_USER</code>, <code>APEX_DB_PASS</code>, <code>APEX_DB_NAME</code>, <code>APEX_DEBUG</code></td><td>Docker, hosting</td></tr>
+</table>
+<p>Si existe <code>config.local.php</code>, tiene prioridad sobre las variables de entorno.</p>
+<pre>&lt;?php
+define('DB_HOST', 'localhost');
+define('DB_PORT', 3306);
+define('DB_USER', 'apex');
+define('DB_PASS', 'una-clave-larga-y-segura');
+define('DB_NAME', 'apex_db');
+// define('APP_DEBUG', true);   // solo para diagnosticar</pre>
+<table>
+  <tr><th>Opción</th><th>Por defecto</th><th>Para qué sirve</th></tr>
+  <tr><td><code>DB_HOST</code> / <code>DB_PORT</code></td><td>localhost / 3306</td><td>Servidor de base de datos.</td></tr>
+  <tr><td><code>DB_USER</code> / <code>DB_PASS</code></td><td>root / (vacía)</td><td>Usuario de MySQL. En producción usa uno propio (capítulo 13).</td></tr>
+  <tr><td><code>DB_NAME</code></td><td>apex_db</td><td>Nombre de la base de datos.</td></tr>
+  <tr><td><code>SESION_INACTIVIDAD_MIN</code></td><td>480</td><td>Minutos sin uso tras los cuales se cierra la sesión.</td></tr>
+  <tr><td><code>PASSWORD_MIN</code></td><td>8</td><td>Longitud mínima de las contraseñas.</td></tr>
+  <tr><td><code>APP_DEBUG</code></td><td>false</td><td>Con <code>false</code> los errores no se muestran y se guardan en <code>logs/php_errors.log</code>.</td></tr>
+</table>
+<p>El sistema trabaja en hora de Colombia (<code>America/Bogota</code>) en PHP y en MySQL, aunque el servidor esté en otra zona.</p>
+</section>
+
+<section class="cap">
+<h2><span class="n">4.</span>Instalar en Windows (XAMPP)</h2>
+<ol class="pasos">
+  <li>Descarga XAMPP desde <code>https://www.apachefriends.org</code> (versión con PHP 8.2) e instálalo en <code>C:\xampp</code> con Apache, MySQL, PHP y phpMyAdmin.</li>
+  <li>En el <b>XAMPP Control Panel</b> pulsa <span class="btn">Start</span> en Apache y MySQL. Para que arranquen con Windows: <span class="btn">Config</span> → <i>Autostart</i>, o instálalos como servicio (casilla <b>Svc</b>).</li>
+  <li>Copia el sistema en <code>C:\xampp\htdocs\apex</code> (o clónalo ahí con Git).</li>
+  <li><i>(Recomendado)</i> Crea la base y un usuario propio: cambia la clave dentro de <code>deploy\crear_base_mysql.sql</code> y ejecuta:
+<pre>C:\xampp\mysql\bin\mysql.exe -u root &lt; C:\xampp\htdocs\apex\deploy\crear_base_mysql.sql</pre>
+  Luego crea <code>config\config.local.php</code> (capítulo 3) con ese usuario y clave. Si omites este paso, APEX usa <code>root</code> sin contraseña, como viene XAMPP.</li>
+  <li>Abre <code>http://localhost/apex/setup.php</code>: crea las tablas, los usuarios iniciales, el «Cliente General (Mostrador)» y cinco categorías de ejemplo (sin productos ni proveedores de ejemplo).</li>
+  <li>Entra a <code>http://localhost/apex</code> (capítulo 8).</li>
+</ol>
+<div class="nota"><b>Puerto ocupado</b>Si Apache no arranca porque el puerto 80 está en uso (Skype, IIS…), cierra ese programa o cambia el puerto en <code>httpd.conf</code> (por ejemplo 8080) y entra con <code>http://localhost:8080/apex</code>.</div>
+</section>
+
+<section class="cap">
+<h2><span class="n">5.</span>Instalar en Linux (Ubuntu / Debian)</h2>
+<pre># 1. Paquetes
+sudo apt update
+sudo apt install -y apache2 mariadb-server php php-mysql php-mbstring git
+sudo a2enmod headers
+
+# 2. Código
+sudo git clone https://github.com/Aperez27/apex-pos.git /var/www/apex
+
+# 3. Base de datos y usuario (cambia la clave dentro del archivo antes)
+sudo nano /var/www/apex/deploy/crear_base_mysql.sql
+sudo mysql &lt; /var/www/apex/deploy/crear_base_mysql.sql
+
+# 4. Configuración local con la misma clave
+sudo cp /var/www/apex/config/config.local.example.php /var/www/apex/config/config.local.php
+sudo nano /var/www/apex/config/config.local.php
+
+# 5. Permisos: solo logs/ es escribible por el servidor web
+sudo chown -R root:www-data /var/www/apex
+sudo chmod -R o-rwx /var/www/apex
+sudo chown -R www-data:www-data /var/www/apex/logs
+
+# 6. Sitio de Apache (edita ServerName)
+sudo cp /var/www/apex/deploy/apache-apex.conf /etc/apache2/sites-available/apex.conf
+sudo nano /etc/apache2/sites-available/apex.conf
+sudo a2ensite apex &amp;&amp; sudo systemctl reload apache2
+
+# 7. Tablas
+sudo -u www-data php /var/www/apex/setup.php</pre>
+<h3>Con Nginx</h3>
+<p>Instala <code>nginx php-fpm php-mysql php-mbstring</code> y usa <code>deploy/nginx-apex.conf</code>, que repite en Nginx todas las reglas de seguridad de los <code>.htaccess</code> (Nginx no los lee). Ajusta la ruta del socket de PHP-FPM a tu versión.</p>
+<h3>Fedora / RHEL / Rocky</h3>
+<p>Paquetes: <code>httpd mariadb-server php php-mysqlnd php-mbstring</code>; el usuario del servidor web es <code>apache</code> y el sitio va en <code>/etc/httpd/conf.d/apex.conf</code>. Si SELinux está activo: <code>sudo chcon -R -t httpd_sys_rw_content_t /var/www/apex/logs</code>.</p>
+<h3>HTTPS</h3>
+<pre>sudo apt install -y certbot python3-certbot-apache
+sudo certbot --apache</pre>
+</section>
+
+<section class="cap">
+<h2><span class="n">6.</span>Instalar en macOS</h2>
+<ul>
+  <li><b>Docker Desktop (recomendado):</b> sigue el capítulo 7.</li>
+  <li><b>XAMPP para macOS:</b> igual que en Windows, con el sistema en <code>/Applications/XAMPP/xamppfiles/htdocs/apex</code> y los programas en <code>/Applications/XAMPP/xamppfiles/bin/</code> (<code>mysql</code>, <code>php</code>).</li>
+  <li><b>Homebrew:</b> <code>brew install php mariadb httpd</code>; en <code>httpd.conf</code> habilita <code>mod_headers</code>, el módulo de PHP y <code>AllowOverride All</code> para la carpeta del sistema; luego los pasos 3, 4 y 7 de Linux.</li>
+</ul>
+<div class="ojo"><b>No uses php -S en producción</b>El servidor integrado de PHP no aplica las reglas de <code>.htaccess</code>; sirve solo para pruebas locales.</div>
+</section>
+
+<section class="cap">
+<h2><span class="n">7.</span>Instalar con Docker</h2>
+<p>Funciona igual en Windows, Linux y macOS. Requiere Docker Desktop (Windows/macOS) o Docker Engine (Linux).</p>
+<pre>git clone https://github.com/Aperez27/apex-pos.git apex
+cd apex
+cp .env.example .env          # Windows PowerShell: copy .env.example .env
+# edita .env y cambia APEX_DB_PASS y DB_ROOT_PASS
+docker compose up -d</pre>
+<p>Abre <code>http://localhost:8080</code>. Se crean dos contenedores:</p>
+<table>
+  <tr><th>Servicio</th><th>Qué es</th></tr>
+  <tr><td><code>db</code></td><td>MariaDB 10.11 con la base <code>apex_db</code> y el usuario <code>apex</code>; los datos persisten en el volumen <code>apex_datos</code>.</td></tr>
+  <tr><td><code>app</code></td><td>Apache + PHP 8.2 con el sistema. Al arrancar espera la base y ejecuta <code>setup.php</code> (crea o actualiza las tablas).</td></tr>
+</table>
+<h3>Comandos útiles</h3>
+<pre>docker compose ps                                    estado
+docker compose logs -f app                           registro del sistema
+docker compose exec db mariadb-dump -u apex -p apex_db &gt; respaldo.sql
+docker compose down                                  detener (los datos se conservan)
+git pull &amp;&amp; docker compose up -d --build             actualizar</pre>
+<p>Para publicarlo en internet, ponlo detrás de un proxy con HTTPS (Nginx, Caddy, Traefik) y cambia <code>APEX_PUERTO</code> si el 8080 está ocupado.</p>
+</section>
+
+<section class="cap">
+<h2><span class="n">8.</span>Primer ingreso y puesta a punto</h2>
+<table>
+  <tr><th>Usuario</th><th>Contraseña inicial</th><th>Rol</th></tr>
+  <tr><td><code>admin</code></td><td><code>admin123</code></td><td>Administrador</td></tr>
+  <tr><td><code>vendedor</code></td><td><code>vendedor123</code></td><td>Vendedor</td></tr>
+</table>
+<div class="ojo"><b>Cambio obligatorio</b>Estas contraseñas son públicas. Al ingresar con ellas, el sistema obliga a cambiarlas (mínimo 8 caracteres, distinta a la inicial y al usuario) antes de permitir usar cualquier módulo.</div>
+<ol class="pasos">
+  <li>Entra con <code>admin</code> / <code>admin123</code> y define la nueva contraseña.</li>
+  <li><b>Configuración:</b> nombre real de la empresa, NIT, teléfono, dirección y mensaje del ticket.</li>
+  <li><b>Usuarios:</b> crea un usuario para cada vendedor (o entra con <code>vendedor</code> y cámbiale la contraseña).</li>
+  <li><b>Inventario → Categorías:</b> renombra o elimina las de ejemplo y crea las tuyas.</li>
+  <li><b>Proveedores:</b> regístralos indicando qué suministra cada uno.</li>
+  <li><b>Inventario:</b> crea los productos con sus colores y stock.</li>
+  <li><b>Caja:</b> abre la primera caja con la base en efectivo y empieza a vender.</li>
+</ol>
+<h3>Protección del instalador</h3>
+<p>Una vez instalado, <code>setup.php</code> solo lo puede ejecutar un administrador con sesión iniciada o la consola (<code>php setup.php</code>). Ejecutarlo varias veces es seguro: solo agrega lo que falte y no borra datos.</p>
+</section>
+
+<section class="cap">
+<h2><span class="n">9.</span>Copias de seguridad</h2>
+<h3>Desde el sistema</h3>
+<p>Menú <b>Backup DB</b> → <span class="btn">Descargar Backup SQL</span>. Genera <code>backup_apex_AAAAMMDD_HHMMSS.sql</code> con toda la estructura y los datos.</p>
+<h3>Automática en Windows</h3>
+<p>Crea <code>C:\respaldos\backup_apex.bat</code> y prográmalo a diario en el <b>Programador de tareas</b>:</p>
+<pre>@echo off
+set F=%date:~-4%%date:~3,2%%date:~0,2%
+"C:\xampp\mysql\bin\mysqldump.exe" -u apex -pTU_CLAVE apex_db &gt; "C:\respaldos\apex_%F%.sql"
+forfiles /p "C:\respaldos" /m apex_*.sql /d -30 /c "cmd /c del @file"</pre>
+<h3>Automática en Linux</h3>
+<pre>sudo mkdir -p /var/backups/apex
+sudo crontab -e
+0 22 * * * mysqldump -u apex -p'TU_CLAVE' apex_db &gt; /var/backups/apex/apex_$(date +\%F).sql &amp;&amp; find /var/backups/apex -name 'apex_*.sql' -mtime +30 -delete</pre>
+<h3>Docker</h3>
+<pre>docker compose exec db mariadb-dump -u apex -p apex_db &gt; respaldo.sql</pre>
+<div class="ojo"><b>Confidencial</b>Los respaldos contienen toda la información del negocio, incluidos los usuarios. Guárdalos fuera del servidor web (nunca en <code>htdocs</code> ni <code>/var/www</code>) y conserva una copia semanal fuera del equipo.</div>
+</section>
+
+<section class="cap">
+<h2><span class="n">10.</span>Restaurar una copia y mover de equipo</h2>
+<pre>mysql -u apex -p apex_db &lt; respaldo.sql             (Windows: C:\xampp\mysql\bin\mysql.exe)
+php setup.php                                        (deja la estructura al día)</pre>
+<p>También desde phpMyAdmin: base <code>apex_db</code> → <b>Importar</b> → archivo <code>.sql</code>. En Docker: <code>docker compose exec -T db mariadb -u apex -p apex_db &lt; respaldo.sql</code>.</p>
+<h3>Mover el sistema a otro equipo</h3>
+<ol class="pasos">
+  <li>En el equipo viejo: descarga un backup y copia la carpeta del sistema (incluido <code>config/config.local.php</code>).</li>
+  <li>En el equipo nuevo: instala según tu sistema (capítulos 4 a 7).</li>
+  <li>Crea la base vacía, restaura el backup y ejecuta <code>php setup.php</code>.</li>
+</ol>
+</section>
+
+<section class="cap">
+<h2><span class="n">11.</span>Actualizar a una versión nueva</h2>
+<ol class="pasos">
+  <li>Descarga un <b>backup</b> de la base de datos.</li>
+  <li>Actualiza el código: <code>git pull</code>, o reemplaza los archivos <b>conservando <code>config/config.local.php</code></b>.</li>
+  <li>Ejecuta <code>php setup.php</code> (o ábrelo como administrador) para aplicar los cambios de estructura.</li>
+  <li>Con Docker: <code>git pull &amp;&amp; docker compose up -d --build</code> (el contenedor ejecuta <code>setup.php</code> solo).</li>
+  <li>Revisa el historial de cambios en <code>CHANGELOG.md</code>.</li>
+</ol>
+</section>
+
+<section class="cap">
+<h2><span class="n">12.</span>Usar el sistema en red local</h2>
+<p>Otros computadores, tabletas o celulares conectados a la misma red pueden usar el sistema:</p>
+<ol class="pasos">
+  <li>Averigua la IP del equipo servidor (<code>ipconfig</code> en Windows, <code>ip a</code> en Linux), por ejemplo <code>192.168.1.50</code>. Conviene fijarla en el router.</li>
+  <li>Permite el puerto 80 (u 8080 con Docker) en el firewall: en Windows, «Permitir» cuando Apache lo pregunte; en Linux, <code>sudo ufw allow 80/tcp</code>.</li>
+  <li>Desde los otros equipos entra a <code>http://192.168.1.50/apex</code> (Docker: <code>http://192.168.1.50:8080</code>).</li>
+</ol>
+<div class="nota"><b>Varios usuarios a la vez</b>El sistema controla que dos personas no vendan el mismo último producto, que dos abonos no superen el saldo, que no se abran dos cajas y que nada se registre en una caja que se está cerrando.</div>
+</section>
+
+<section class="cap">
+<h2><span class="n">13.</span>Puesta en producción y seguridad</h2>
+<p>APEX ya incluye:</p>
+<ul>
+  <li>Contraseñas cifradas (bcrypt), mínimo 8 caracteres, cambio obligatorio de la contraseña inicial y bloqueo de 15 minutos tras 5 intentos fallidos.</li>
+  <li>Sesiones con cookie protegida, renovación al ingresar y cierre por inactividad.</li>
+  <li>Token anti-falsificación (CSRF) en todos los formularios, consultas SQL parametrizadas y salida escapada contra XSS.</li>
+  <li>Cabeceras de seguridad (CSP, anti-clickjacking, nosniff) y bloqueo de carpetas internas, <code>.git</code> y archivos de configuración.</li>
+  <li>Errores ocultos al usuario y registrados en <code>logs/php_errors.log</code>; instalador bloqueado una vez instalado.</li>
+</ul>
+<h3>Lista de verificación</h3>
+<table>
+  <tr><th>✔</th><th>Tarea</th></tr>
+  <tr><td>☐</td><td>Usuario MySQL propio con contraseña (<code>deploy/crear_base_mysql.sql</code>) y <code>config.local.php</code> con esos datos.</td></tr>
+  <tr><td>☐</td><td>Contraseña asignada a <code>root</code> de MySQL (en XAMPP viene vacía).</td></tr>
+  <tr><td>☐</td><td>Contraseñas iniciales de <code>admin</code> y <code>vendedor</code> cambiadas.</td></tr>
+  <tr><td>☐</td><td><code>APP_DEBUG</code> en <code>false</code>.</td></tr>
+  <tr><td>☐</td><td>HTTPS si el sistema es accesible desde internet.</td></tr>
+  <tr><td>☐</td><td>phpMyAdmin solo accesible localmente (XAMPP: <code>Require local</code> en <code>httpd-xampp.conf</code>) o desinstalado.</td></tr>
+  <tr><td>☐</td><td>Copias de seguridad automáticas diarias y una copia semanal fuera del equipo.</td></tr>
+  <tr><td>☐</td><td>Comprobado que <code>/config/</code>, <code>/logs/</code> y <code>/.git/</code> responden «Forbidden» (403).</td></tr>
+  <tr><td>☐</td><td>Sistema operativo, XAMPP / paquetes y Docker actualizados.</td></tr>
+</table>
+<p>Opcional: en producción puedes eliminar las carpetas <code>tests</code> y <code>docs/fuente</code> (las descargas de <i>Releases</i> ya no las incluyen).</p>
+</section>
+
+<section class="cap">
+<h2><span class="n">14.</span>Verificar la instalación</h2>
+<p>El sistema incluye pruebas automáticas. Requieren <code>bash</code> + <code>curl</code> (en Windows, Git Bash) y, para las de navegador, Python con Playwright:</p>
+<pre>bash tests/e2e.sh              (≈140 pruebas HTTP: ventas, caja, descuadres, permisos, seguridad)
+python tests/ui_test.py        (≈47 pruebas en navegador: pantallas, PDF, celular, XSS)</pre>
+<p>Usan un administrador temporal (<code>zzadmin</code>) y datos con prefijo <code>ZZ</code> que se eliminan al final; no tocan las cuentas reales y, si hay una caja abierta, no la cierran. Variables opcionales: <code>APEX_URL</code>, <code>MYSQL_BIN</code>, <code>PHP_BIN</code>, <code>MYSQL_USER</code>, <code>MYSQL_PASS</code>, <code>APEX_DB_NAME</code>, <code>APEX_BROWSER</code>.</p>
+<pre># Linux, ejemplo
+pip install playwright &amp;&amp; playwright install chromium
+APEX_URL=http://localhost MYSQL_USER=apex MYSQL_PASS=TU_CLAVE bash tests/e2e.sh</pre>
+</section>
+
+<section class="cap">
+<h2><span class="n">15.</span>Solución de problemas</h2>
+<table>
+  <tr><th>Síntoma</th><th>Causa y solución</th></tr>
+  <tr><td>«Error de conexión a la base de datos»</td><td>MySQL apagado o datos incorrectos en <code>config/config.local.php</code> (o en las variables de entorno). Revisa usuario, contraseña, host y <code>DB_NAME</code>.</td></tr>
+  <tr><td>El login dice «Base de datos no disponible»</td><td>La base aún no existe: ejecuta <code>setup.php</code>.</td></tr>
+  <tr><td>«APEX ya está instalado» al abrir setup.php</td><td>Normal. Para actualizar la estructura entra como administrador y vuelve a abrirlo, o ejecuta <code>php setup.php</code>.</td></tr>
+  <tr><td>«Ocurrió un error»</td><td>Revisa la última línea de <code>logs/php_errors.log</code>. Para ver el detalle en pantalla pon temporalmente <code>APP_DEBUG</code> en <code>true</code>.</td></tr>
+  <tr><td>Linux: errores al escribir el registro</td><td>La carpeta <code>logs</code> debe pertenecer al usuario del servidor web: <code>sudo chown -R www-data:www-data logs</code>.</td></tr>
+  <tr><td>Se puede abrir <code>/config/</code>, <code>/logs/</code> o <code>/.git/</code> desde el navegador</td><td>Apache ignora los <code>.htaccess</code>: pon <code>AllowOverride All</code> para la carpeta del sistema, activa <code>mod_headers</code> y reinicia. En Nginx usa <code>deploy/nginx-apex.conf</code>. Deben responder 403.</td></tr>
+  <tr><td>Se ve sin estilos o sin íconos</td><td>El equipo no tiene internet (los estilos vienen de CDN).</td></tr>
+  <tr><td>«Demasiados intentos fallidos»</td><td>Bloqueo de 15 minutos por contraseñas erradas. Espera o, si es urgente: <code>DELETE FROM login_intentos;</code></td></tr>
+  <tr><td>Olvidé la contraseña del administrador</td><td>Desde otro administrador, cámbiala en Usuarios. Si no hay otro: genera un hash con <code>php -r "echo password_hash('NuevaClave2026', PASSWORD_DEFAULT);"</code> y actualiza la columna <code>password</code> del usuario (y pon <code>debe_cambiar_clave=1</code> para que la cambie al entrar).</td></tr>
+  <tr><td>Docker: el contenedor <code>app</code> se reinicia</td><td><code>docker compose logs app</code>. Suele ser que <code>.env</code> no existe o las claves no coinciden; tras cambiar la clave de la base hay que borrar el volumen (<code>docker compose down -v</code>, se pierden los datos) o cambiarla dentro de MariaDB.</td></tr>
+  <tr><td>Fechas u horas desfasadas</td><td>Revisa la hora del equipo; el sistema trabaja en hora de Colombia.</td></tr>
+  <tr><td>El PDF del cierre no se descarga</td><td>Sin internet no carga el generador; usa <span class="btn">Imprimir</span> → «Guardar como PDF».</td></tr>
+</table>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+# ── Configuración y datos de cada instalación (nunca al repositorio) ──
+config/config.local.php
+logs/*
+!logs/.htaccess
+!logs/.gitkeep
+*.sql
+!docs/fuente/demo_datos.sql
+!deploy/*.sql
+*.bak
+*.zip
+
+# ── Herramientas y sistema operativo ──
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

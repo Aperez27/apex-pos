@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.1', '8.2', '8.3']
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: ci
+          MARIADB_DATABASE: apex_db
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pdo_mysql, mbstring
+          coverage: none
+
+      - name: Sintaxis PHP
+        run: find . -name '*.php' -not -path './docs/*' -print0 | xargs -0 -n1 php -l
+
+      - name: Instalación de la base de datos (dos veces; debe ser idempotente)
+        env:
+          APEX_DB_HOST: 127.0.0.1
+          APEX_DB_USER: root
+          APEX_DB_PASS: ci
+        run: |
+          php setup.php
+          php setup.php
+          mysql -h127.0.0.1 -uroot -pci apex_db -e "SHOW TABLES" | tee /dev/stderr | grep -q cajas

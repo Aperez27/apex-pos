@@ -1,0 +1,16 @@
+# Finales de línea normalizados (los scripts de shell siempre con LF para Linux/macOS/Docker)
+* text=auto
+*.sh text eol=lf
+docker/* text eol=lf
+*.php text eol=lf
+*.pdf binary
+*.jpg binary
+*.png binary
+
+# No se incluyen en los paquetes de instalación generados con "git archive" / releases de GitHub
+/tests export-ignore
+/docs/fuente export-ignore
+/.github export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.editorconfig export-ignore

@@ -1,0 +1,24 @@
+# APEX — reglas de seguridad para Apache
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "same-origin"
+    Header always unset X-Powered-By
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    # Solo se cargan scripts, estilos y fuentes del propio sistema y de los CDN que usa (Bootstrap, Font Awesome, SweetAlert2, html2pdf)
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+</IfModule>
+
+# Archivos que nunca deben descargarse desde el navegador: ocultos (.env, .git…), configuración,
+# scripts, respaldos, documentación del repositorio y archivos de Docker
+<FilesMatch "^\.|\.(sh|sql|log|md|bak|ini|dist|yml|yaml|conf|example|py|lock)$|^(Dockerfile|LICENSE)$">
+    Require all denied
+</FilesMatch>
+
+# Carpetas internas (respaldo por si falta el .htaccess de alguna de ellas, y para .git)
+<IfModule mod_alias.c>
+    RedirectMatch 403 (?i)/(\.git|\.github|config|includes|logs|tests|deploy|docker|docs/fuente)(/|$)
+</IfModule>

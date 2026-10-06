@@ -1,0 +1,37 @@
+# APEX con Docker — funciona igual en Windows, Linux y macOS.
+#   1. Copia .env.example como .env y cambia las contraseñas.
+#   2. docker compose up -d
+#   3. Abre http://localhost:8080  (usuario inicial admin / admin123; el sistema pedirá cambiarla)
+services:
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: apex_db
+      MARIADB_USER: apex
+      MARIADB_PASSWORD: ${APEX_DB_PASS:?Define APEX_DB_PASS en el archivo .env}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS:?Define DB_ROOT_PASS en el archivo .env}
+      TZ: America/Bogota
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - apex_datos:/var/lib/mysql
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "${APEX_PUERTO:-8080}:80"
+    environment:
+      APEX_DB_HOST: db
+      APEX_DB_USER: apex
+      APEX_DB_PASS: ${APEX_DB_PASS}
+      APEX_DB_NAME: apex_db
+      TZ: America/Bogota
+    volumes:
+      - apex_logs:/var/www/html/logs
+
+volumes:
+  apex_datos:
+  apex_logs:
